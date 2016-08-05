@@ -6,25 +6,28 @@ import config
 
 def do_mysql(host, user, passwd, dbname):
     print host, user, passwd, dbname
-    # connect
-    db = MySQLdb.connect(host=host, user=user, passwd=passwd, db=dbname)
-
-    cursor = db.cursor()
-
-    # execute SQL select statement
-    cursor.execute("show databases")
-
-    # commit your changes
-    db.commit()
-
-    # get the number of rows in the resultset
-    numrows = int(cursor.rowcount)
-
     content = ""
-    # get and display one row at a time.
-    for x in range(0,numrows):
-        row = cursor.fetchone()
-        content += "%s\n" % row
+    try:
+        # connect
+        db = MySQLdb.connect(host=host, user=user, passwd=passwd, db=dbname)
+
+        cursor = db.cursor()
+
+        # execute SQL select statement
+        cursor.execute("show databases")
+
+        # commit your changes
+        db.commit()
+
+        # get the number of rows in the resultset
+        numrows = int(cursor.rowcount)
+
+        # get and display one row at a time.
+        for x in range(0,numrows):
+            row = cursor.fetchone()
+            content += "%s\n" % row
+    except MySQLdb.OperationalError as e:
+        return "%s: AWS RDS may not set up correctly, check host %s" % (e, host)
     return content
 
 def main():

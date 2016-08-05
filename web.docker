@@ -1,0 +1,12 @@
+FROM poc-base:1.0
+
+ENV PROJECT /project
+
+RUN virtualenv $PROJECT/venv2
+RUN mkdir -p $PROJECT/codes/poc-aws/
+COPY ./* $PROJECT/codes/poc-aws/
+RUN $PROJECT/venv2/bin/pip install --requirement $PROJECT/codes/poc-aws/requirements.txt
+
+WORKDIR $PROJECT/codes/poc-aws
+ENTRYPOINT ["/project/venv2/bin/python"]
+CMD ["main.py", "&"]
