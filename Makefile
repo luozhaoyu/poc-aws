@@ -4,10 +4,10 @@ build-docker-base:
 	docker build -t poc-base:1.0 -f base.docker .
 
 build-docker-web: pull build-docker-base
-	docker build -t poc-web:1.0 -f web.docker .
+	docker build -t poc-aws:latest -f web.docker .
 
 run: build-docker-web
-	docker run -it -d poc-web:1.0
+	docker run -it -d poc-aws:latest
 
 # attach to latest container
 LATEST_CONTAINER=$(shell docker ps -l -q)
